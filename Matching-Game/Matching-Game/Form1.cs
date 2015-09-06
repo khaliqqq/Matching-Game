@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 
 namespace Matching_Game
 {
@@ -22,6 +18,8 @@ namespace Matching_Game
 
         Label firstClicked = null;
         Label secondClicked = null;
+
+        int timeCount;
 
         public Form1()
         {
@@ -43,6 +41,11 @@ namespace Matching_Game
 
                 }
             }
+
+            timer2.Enabled = true;
+            timeCount = 0;
+            elapsedTime.Text = timeCount + " seconds";
+            timer2.Start();
         }
 
         /// <summary> 
@@ -96,6 +99,7 @@ namespace Matching_Game
                 {
                     firstClicked = null;
                     secondClicked = null;
+                    SystemSounds.Beep.Play();
                     return;
                 }
 
@@ -149,12 +153,20 @@ namespace Matching_Game
                         return;
                 }
             }
+            timer2.Stop();
+            timer2.Enabled = false;
 
             // If the loop didn’t return, it didn't find 
             // any unmatched icons 
             // That means the user won. Show a message and close the form
-            MessageBox.Show("You matched all the icons!", "Congratulations");
+            MessageBox.Show("You matched all the icons in " + timeCount + " seconds!", "Congratulations");
             Close();
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            timeCount++;
+            elapsedTime.Text = timeCount + " seconds";
         }
     }
 }
